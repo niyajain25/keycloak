@@ -1,0 +1,54 @@
+spring:
+  application:
+    name: HarnessId
+
+  # OAuth2 Resource Server Configuration
+  security:
+    oauth2:
+      resourceserver:
+        jwt:
+          issuer-uri: ${KEYCLOAK_ISSUER_URI:http://localhost:8080/realms/harnessid}
+          jwk-set-uri: ${KEYCLOAK_JWK_SET_URI:http://localhost:8080/realms/harnessid/protocol/openid-connect/certs}
+
+# Keycloak Configuration
+keycloak:
+  realm: ${KEYCLOAK_REALM:harnessid}
+  auth-server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8080}
+
+  # Admin Client Configuration
+  admin:
+    server-url: ${KEYCLOAK_SERVER_URL:http://localhost:8080}
+    realm: ${KEYCLOAK_REALM:harnessid}
+    client-id: ${KEYCLOAK_ADMIN_CLIENT_ID:admin-cli}
+    username: ${KEYCLOAK_ADMIN_USERNAME:admin}
+    password: ${KEYCLOAK_ADMIN_PASSWORD:admin}
+
+# Server Configuration
+server:
+  port: 8181
+
+# Actuator Configuration (Agent-friendly)
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info,metrics
+      base-path: /actuator
+  endpoint:
+    health:
+      show-details: always
+
+# OpenAPI/Swagger Configuration (Agent-friendly API documentation)
+springdoc:
+  api-docs:
+    path: /api-docs
+  swagger-ui:
+    path: /swagger-ui.html
+    enabled: true
+
+# Logging Configuration
+logging:
+  level:
+    com.harness: DEBUG
+    org.keycloak: INFO
+    org.springframework.security: INFO
